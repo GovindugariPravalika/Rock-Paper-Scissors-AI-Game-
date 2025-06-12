@@ -1,0 +1,58 @@
+import random
+from collections import Counter
+
+# Game choices
+choices = ['rock', 'paper', 'scissors']
+
+# Track player move history
+player_history = []
+
+# Function to get AI move
+def get_ai_move():
+    if len(player_history) < 3:
+        return random.choice(choices)  # Start with random
+    else:
+        # Predict player move by frequency
+        most_common = Counter(player_history).most_common(1)[0][0]
+        if most_common == 'rock':
+            return 'paper'
+        elif most_common == 'paper':
+            return 'scissors'
+        else:
+            return 'rock'
+
+# Function to decide winner
+def get_winner(player, ai):
+    if player == ai:
+        return "It's a tie!"
+    elif (player == "rock" and ai == "scissors") or \
+         (player == "scissors" and ai == "paper") or \
+         (player == "paper" and ai == "rock"):
+        return "You win!"
+    else:
+        return "AI wins!"
+
+# Game loop
+def play_game():
+    print("Welcome to Rock, Paper, Scissors AI!")
+    print("Type 'rock', 'paper', or 'scissors'. Type 'exit' to quit.")
+
+    while True:
+        player_move = input("\nYour move: ").lower()
+        if player_move == 'exit':
+            print("Thanks for playing!")
+            break
+        if player_move not in choices:
+            print("Invalid choice. Try again.")
+            continue
+
+        ai_move = get_ai_move()
+        print(f"AI played: {ai_move}")
+        result = get_winner(player_move, ai_move)
+        print(result)
+
+        player_history.append(player_move)
+
+# Run the game
+if __name__ == "__main__":
+    play_game()
